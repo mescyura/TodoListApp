@@ -1,7 +1,8 @@
 package com.todo.todolistapp.service;
 
-import com.todo.todolistapp.dto.project.ProjectDto;
-import com.todo.todolistapp.dto.project.ProjectResponseDto;
+import com.todo.todolistapp.dto.project.ProjectRequestDTO;
+import com.todo.todolistapp.dto.project.ProjectDTO;
+import com.todo.todolistapp.dto.project.ProjectVO;
 import com.todo.todolistapp.exceptions.ProjectException;
 import com.todo.todolistapp.entity.Project;
 
@@ -11,27 +12,27 @@ public interface ProjectService {
     /**
      * Save {@link Project} to DB.
      *
-     * @param projectDto - entity of {@link ProjectDto}.
-     * @return saved {@link ProjectResponseDto}.
+     * @param projectDto - entity of {@link ProjectRequestDTO}.
+     * @return saved {@link ProjectDTO}.
      */
-    ProjectResponseDto saveProject(ProjectDto projectDto) throws ProjectException;
+    ProjectVO saveProject(ProjectRequestDTO projectDto) throws ProjectException;
 
     /**
      * Update {@link Project} in DB.
      *
      * @param id         - {@link Project} id.
-     * @param projectDto - {@link ProjectDto} entity.
-     * @return {@link ProjectResponseDto} updated entity.
+     * @param projectDto - {@link ProjectRequestDTO} entity.
+     * @return {@link ProjectDTO} updated entity.
      */
-    ProjectResponseDto updateProject(ProjectDto projectDto, long id) throws ProjectException;
+    ProjectVO updateProject(ProjectRequestDTO projectDto, long id) throws ProjectException;
 
     /**
      * Find {@link Project} entity by id.
      *
      * @param id - {@link Project} id.
-     * @return {@link ProjectResponseDto} entity.
+     * @return {@link ProjectDTO} entity.
      */
-    ProjectResponseDto getProjectById(Long id) throws ProjectException;
+    ProjectVO getProjectById(Long id) throws ProjectException;
 
     /**
      * Delete {@link Project} from DB by id.
@@ -44,7 +45,7 @@ public interface ProjectService {
     /**
      * Find all {@link Project} from DB.
      *
-     * @return List of {@link ProjectResponseDto}.
+     * @return List of {@link ProjectDTO}.
      */
-    List<ProjectResponseDto> getAllProjects();
+    List<ProjectVO> getAllProjects();
 }

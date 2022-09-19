@@ -1,8 +1,8 @@
 package com.todo.todolistapp.converter;
 
 import com.todo.todolistapp.dto.comment.CommentDto;
-import com.todo.todolistapp.dto.project.ProjectDto;
-import com.todo.todolistapp.dto.task.TaskDto;
+import com.todo.todolistapp.dto.project.ProjectRequestDTO;
+import com.todo.todolistapp.dto.task.TaskRequestDTO;
 import com.todo.todolistapp.entity.Comment;
 import com.todo.todolistapp.entity.Project;
 import com.todo.todolistapp.entity.Task;
@@ -27,9 +27,9 @@ public class Converter {
         return date;
     }
 
-    public TaskDto taskToTaskDto(Task task) {
+    public TaskRequestDTO taskToTaskDto(Task task) {
         logger.debug("taskToTaskDto method. Input values:{}", task);
-        TaskDto taskDto = new TaskDto();
+        TaskRequestDTO taskDto = new TaskRequestDTO();
         LocalDateTime created = task.getCreated();
         LocalDateTime dueDate = task.getDueDate();
         if (created != null) {
@@ -47,7 +47,7 @@ public class Converter {
 //        taskDto.setProgress(task.getProgress());
 
         if (task.getProject() != null) {
-            ProjectDto projectDTO = new ProjectDto();
+            ProjectRequestDTO projectDTO = new ProjectRequestDTO();
 //            projectDTO.setId(task.getProject().getId());
             projectDTO.setName(task.getProject().getName());
 //            taskDto.setProject(projectDTO);
@@ -55,11 +55,11 @@ public class Converter {
         return taskDto;
     }
 
-    public List<TaskDto> parsingTaskDataToTaskDTO(Collection<Task> tasks) {
+    public List<TaskRequestDTO> parsingTaskDataToTaskDTO(Collection<Task> tasks) {
         logger.debug("parsingTaskDataToTaskDTO method.");
-        List<TaskDto> taskResult = new ArrayList<>();
+        List<TaskRequestDTO> taskResult = new ArrayList<>();
         for (Task task : tasks) {
-            TaskDto taskDto = taskToTaskDto(task);
+            TaskRequestDTO taskDto = taskToTaskDto(task);
             taskResult.add(taskDto);
         }
         return taskResult;
@@ -88,19 +88,19 @@ public class Converter {
         return commentResult;
     }
 
-    public ProjectDto projectToProjectDto(Project project) {
+    public ProjectRequestDTO projectToProjectDto(Project project) {
         logger.debug("converting project to project DTO", project);
-        ProjectDto projectDto = new ProjectDto();
+        ProjectRequestDTO projectDto = new ProjectRequestDTO();
 //        projectDto.setId(project.getId());
         projectDto.setName(project.getName());
         return projectDto;
     }
 
-    public List<ProjectDto> parsingProjectDataToProjectDTO(List<Project> projects) {
+    public List<ProjectRequestDTO> parsingProjectDataToProjectDTO(List<Project> projects) {
         logger.debug("parsing ProjectData to Project DTO");
-        List<ProjectDto> projectDtoList = new ArrayList<>();
+        List<ProjectRequestDTO> projectDtoList = new ArrayList<>();
         for (Project project : projects) {
-            ProjectDto projectDto = projectToProjectDto(project);
+            ProjectRequestDTO projectDto = projectToProjectDto(project);
             projectDtoList.add(projectDto);
         }
         return projectDtoList;

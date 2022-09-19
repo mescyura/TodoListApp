@@ -1,9 +1,12 @@
 package com.todo.todolistapp.controller;
 
-import com.todo.todolistapp.dto.project.ProjectDto;
-import com.todo.todolistapp.dto.project.ProjectResponseDto;
+import com.todo.todolistapp.dto.project.ProjectDTO;
+import com.todo.todolistapp.dto.project.ProjectRequestDTO;
+import com.todo.todolistapp.dto.project.ProjectVO;
+import com.todo.todolistapp.dto.task.TaskVO;
 import com.todo.todolistapp.exceptions.ProjectException;
 import com.todo.todolistapp.service.ProjectService;
+import com.todo.todolistapp.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,16 +24,28 @@ public class ProjectController {
     @Autowired
     ProjectService service;
 
+    @Autowired
+    TaskService taskService;
+
     @GetMapping("/all-projects")
     public ResponseEntity<List<?>> getAllProjects() {
         log.info("getting all projects controller");
-        List<ProjectResponseDto> users = service.getAllProjects();
+        List<ProjectVO> projects = service.getAllProjects();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+
+    }
+  //TODO - delete from here
+
+    @GetMapping("/all-tasks")
+    public ResponseEntity<List<?>> getAllTasks() {
+        log.info("getting all projects controller");
+        List<TaskVO> users = taskService.getAllTasks();
         return new ResponseEntity<>(users, HttpStatus.OK);
 
     }
 
     @PostMapping(value = "/create-project", consumes = "application/json")
-    public ResponseEntity<?> createProject(@Valid @RequestBody ProjectDto projectDto) {
+    public ResponseEntity<?> createProject(@Valid @RequestBody ProjectRequestDTO projectDto) {
         log.info("create a project controller");
         try {
             service.saveProject(projectDto);
@@ -41,7 +56,7 @@ public class ProjectController {
     }
 
     @PutMapping(value = "/update-project/{id}", consumes = "application/json")
-    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectDto projectDto, @PathVariable long id) {
+    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequestDTO projectDto, @PathVariable long id) {
         log.info("update project controller");
         try {
             service.updateProject(projectDto, id);

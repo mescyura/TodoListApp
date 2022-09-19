@@ -1,7 +1,7 @@
 package com.todo.todolistapp.service;
 
-import com.todo.todolistapp.dto.project.ProjectDto;
-import com.todo.todolistapp.dto.project.ProjectResponseDto;
+import com.todo.todolistapp.dto.project.ProjectRequestDTO;
+import com.todo.todolistapp.dto.project.ProjectVO;
 import com.todo.todolistapp.entity.Project;
 import com.todo.todolistapp.exceptions.ProjectException;
 import com.todo.todolistapp.mapper.ProjectMapper;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     private final ProjectMapper mapper;
     private final ProjectRepository repository;
@@ -31,7 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDto saveProject(ProjectDto projectDto) throws ProjectException {
+    public ProjectVO saveProject(ProjectRequestDTO projectDto) throws ProjectException {
         Optional<Project> optionalProject = repository.findProjectByName(projectDto.getName());
         if ((optionalProject.isPresent())) {
             logger.warn("there is an existing project with {} name already", projectDto.getName());
@@ -41,11 +41,11 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreated(LocalDateTime.now());
         Project savedProject = repository.save(project);
         logger.info("project -  {} successfully created", project);
-        return mapper.toResponseDto(savedProject);
+        return mapper.toProjectVO(savedProject);
     }
 
     @Override
-    public ProjectResponseDto updateProject(ProjectDto projectDto, long id) throws ProjectException {
+    public ProjectVO updateProject(ProjectRequestDTO projectDto, long id) throws ProjectException {
         logger.info("searching for a project with id - {}, to update", id);
         Optional<Project> projectOptional = repository.findById(id);
         if (projectOptional.isPresent()) {
@@ -55,7 +55,7 @@ public class ProjectServiceImpl implements ProjectService {
             project.setUpdated(LocalDateTime.now());
             Project savedProject = repository.save(project);
             logger.info("project -  {} successfully updated", project);
-            return mapper.toResponseDto(savedProject);
+            return mapper.toProjectVO(savedProject);
         } else {
             logger.warn("project with id - {} not found", id);
             throw new ProjectException(ProjectException.NotFoundException(id));
@@ -63,12 +63,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDto getProjectById(Long id) throws ProjectException {
+    public ProjectVO getProjectById(Long id) throws ProjectException {
         logger.info("searching for a project with id - {}", id);
         Optional<Project> projectOptional = repository.findById(id);
         if (projectOptional.isPresent()) {
+            projectOptional.get().getTaskList().iterator();
             logger.info("found project - {}", projectOptional.get());
-            return mapper.toResponseDto(projectOptional.get());
+            return mapper.toProjectVO(projectOptional.get());
         } else {
             logger.warn("project with id - {} not found", id);
             throw new ProjectException(ProjectException.NotFoundException(id));
@@ -89,12 +90,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectResponseDto> getAllProjects() {
+    public List<ProjectVO> getAllProjects() {
         logger.info("getting all projects");
         List<Project> projects = repository.findAll();
         if (projects.size() > 0) {
             logger.info("successfully loaded projects {} ", projects);
-            return mapper.toResponseDtoList(projects);
+            return mapper.toProjectVOList(projects);
         } else {
             logger.warn("no projects in the database");
             return new ArrayList<>();

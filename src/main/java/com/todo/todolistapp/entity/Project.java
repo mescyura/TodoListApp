@@ -1,20 +1,22 @@
 package com.todo.todolistapp.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
-@Data
+
 @Getter
 @Setter
 @Entity
 @Table(name = "project")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project implements Serializable {
 
     private static final long serialVersionUID = -8366835974390941850L;
@@ -29,31 +31,17 @@ public class Project implements Serializable {
     private LocalDateTime created;
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updated;
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    private Set<Task> tasksSet;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> taskList;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return Objects.equals(id, project.id) && Objects.equals(name, project.name) && Objects.equals(description, project.description) && Objects.equals(created, project.created) && Objects.equals(updated, project.updated) && Objects.equals(tasksSet, project.tasksSet);
+    public void removeTask(Task task) {
+        taskList.add(task);
+        task.setProject(this);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, created, updated, tasksSet);
+    public void addTask(Task task) {
+        taskList.remove(task);
+        task.setProject(null);
     }
 
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", tasksSet=" + tasksSet +
-                '}';
-    }
 }
