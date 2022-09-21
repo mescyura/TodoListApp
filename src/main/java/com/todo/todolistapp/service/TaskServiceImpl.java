@@ -49,6 +49,10 @@ public class TaskServiceImpl implements TaskService {
             throw new TaskException(TaskException.TaskAlreadyExists());
         }
         Task task = taskMapper.toTaskEntity(taskDto);
+        if (task.getProject() != null) {
+            Optional<Project> projectOptional = projectRepository.findById(taskDto.getProject().getId());
+            projectOptional.ifPresent(task::setProject);
+        }
         task.setCreated(LocalDateTime.now());
         Task savedTask = taskRepository.save(task);
         logger.info("task -  {} successfully created", taskDto);
@@ -84,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
                 task.setProject(project);
                 projectRepository.save(project);
             }
-            if(taskDto.getProject() == null){
+            if (taskDto.getProject() == null) {
                 task.setProject(null);
             }
             Task savedTask = taskRepository.save(task);

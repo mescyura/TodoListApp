@@ -17,4 +17,16 @@ public class ProjectVO {
     private String created;
     private String updated;
     private List<TaskDTO> taskList;
+
+    @Override
+    public String toString() {
+        return "ProjectVO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", created='" + created + '\'' +
+                ", updated='" + updated + '\'' +
+                ", taskList=" + taskList +
+                '}';
+    }
 }

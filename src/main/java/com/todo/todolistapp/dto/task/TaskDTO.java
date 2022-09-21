@@ -19,4 +19,19 @@ public class TaskDTO {
     private Status status;
     private Priority priority;
     private int progress;
+
+    @Override
+    public String toString() {
+        return "TaskDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", created='" + created + '\'' +
+                ", updated='" + updated + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                ", status=" + status +
+                ", priority=" + priority +
+                ", progress=" + progress +
+                '}';
+    }
 }

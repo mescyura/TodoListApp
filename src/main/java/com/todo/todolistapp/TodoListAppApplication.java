@@ -1,8 +1,10 @@
 package com.todo.todolistapp;
 
+import com.todo.todolistapp.dto.comment.CommentRequestDTO;
 import com.todo.todolistapp.dto.project.ProjectRequestDTO;
 import com.todo.todolistapp.dto.task.TaskRequestDTO;
 import com.todo.todolistapp.enums.Priority;
+import com.todo.todolistapp.service.CommentServiceImpl;
 import com.todo.todolistapp.service.ProjectServiceImpl;
 import com.todo.todolistapp.service.TaskServiceImpl;
 import org.springframework.boot.CommandLineRunner;
@@ -18,44 +20,36 @@ public class TodoListAppApplication {
     }
 
     @Bean
-    public CommandLineRunner demoData(ProjectServiceImpl projectService, TaskServiceImpl taskService) {
+    public CommandLineRunner demoData(ProjectServiceImpl projectService, TaskServiceImpl taskService, CommentServiceImpl commentService) {
         return args -> {
 
             projectService.saveProject(ProjectRequestDTO.builder().name("project").description("project").build());
-
-            projectService.saveProject(ProjectRequestDTO.builder().name("project_2").description("project_2").build());
-
-            projectService.saveProject(ProjectRequestDTO.builder().name("project_3").description("project_3").build());
-
 
             projectService.getAllProjects();
 
             taskService.saveTask(TaskRequestDTO.builder().name("task_1").description("task_1").build());
 
-            taskService.saveTask(TaskRequestDTO.builder().name("task_2").description("task_2")
-                    .project(ProjectRequestDTO.builder().id(1L).name("hello").description("hello").build()).build());
+            System.out.println(taskService.saveTask(TaskRequestDTO.builder().name("task_2").description("task_2")
+                    .project(ProjectRequestDTO.builder().id(1L).name("hello").description("hello").build()).build()));
+            System.out.println("----------");
+            System.out.println("----------");
 
-            taskService.saveTask(TaskRequestDTO.builder().name("task_3").description("task_3")
-                    .project(ProjectRequestDTO.builder().id(1L).name("hello").description("hello").build()).build());
+            System.out.println(taskService.getTaskById(2L));
 
-            taskService.saveTask(TaskRequestDTO.builder().name("task_4").description("task_4")
-                    .project(ProjectRequestDTO.builder().id(1L).name("hello").description("hello").build()).build());
+            commentService.addComment(CommentRequestDTO.builder().comment("comment").build(),2L);
 
-            projectService.getProjectById(1L);
+            commentService.addComment(CommentRequestDTO.builder().comment("comment_2").build(),2L);
 
-            taskService.getAllTasks();
+            commentService.updateComment(CommentRequestDTO.builder().comment("hello").build(),1L);
 
-            taskService.updateTask(TaskRequestDTO.builder().name("updated task_1").priority(Priority.HIGH)
-                    .project(ProjectRequestDTO.builder().id(1L).name("project").description("project").build()).build(), 1L);
+            System.out.println(taskService.getTaskById(2L));
 
-            projectService.getAllProjects();
+            commentService.deleteComment(CommentRequestDTO.builder().id(1L).build());
 
-            taskService.updateTask(TaskRequestDTO.builder().name("updated task_1").priority(Priority.LOW).build(), 4L);
+            System.out.println(taskService.getTaskById(2L));
 
-          projectService.getAllProjects();
-          taskService.getAllTasks();
+            taskService.deleteTask(2L);
 
         };
     }
-
 }

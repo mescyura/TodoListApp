@@ -10,7 +10,8 @@ public class CommentException extends Exception {
         return "Comment with id " + id + " not found!";
     }
 
-    public static String CommentAlreadyExists() {
-        return "Comment with given name already exists!";
+    public static String CommentIsNull(long id) {
+        return "Comment body with id " + id + " is null!";
     }
+
 }

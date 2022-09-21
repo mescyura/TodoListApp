@@ -1,18 +1,24 @@
 package com.todo.todolistapp.mapper;
 
-import com.todo.todolistapp.dto.comment.CommentDto;
-import com.todo.todolistapp.dto.comment.CommentResponseDto;
+import com.todo.todolistapp.dto.comment.CommentDTO;
+import com.todo.todolistapp.dto.comment.CommentRequestDTO;
+import com.todo.todolistapp.dto.project.ProjectRequestDTO;
+import com.todo.todolistapp.dto.project.ProjectVO;
 import com.todo.todolistapp.entity.Comment;
+import com.todo.todolistapp.entity.Project;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = TimeMapper.class)
 public interface CommentMapper {
 
-    CommentResponseDto toResponseDto(Comment comment);
+    Comment toCommentEntity(CommentRequestDTO commentRequestDTO);
 
-    Comment toCommentEntity(CommentDto commentDto);
+    @Mapping(source = "updated", target = "updated", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+    CommentDTO toCommentDTO(Comment comment);
 
-    List<CommentResponseDto> toResponseDtoList(List<Comment> commentList);
+    List<CommentDTO> toCommentDTOList(List<Comment> commentList);
 }

@@ -3,8 +3,10 @@ package com.todo.todolistapp.controller;
 import com.todo.todolistapp.dto.project.ProjectDTO;
 import com.todo.todolistapp.dto.project.ProjectRequestDTO;
 import com.todo.todolistapp.dto.project.ProjectVO;
+import com.todo.todolistapp.dto.task.TaskRequestDTO;
 import com.todo.todolistapp.dto.task.TaskVO;
 import com.todo.todolistapp.exceptions.ProjectException;
+import com.todo.todolistapp.exceptions.TaskException;
 import com.todo.todolistapp.service.ProjectService;
 import com.todo.todolistapp.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,17 @@ public class ProjectController {
         List<TaskVO> users = taskService.getAllTasks();
         return new ResponseEntity<>(users, HttpStatus.OK);
 
+    }
+
+    @PostMapping(value = "/create-task", consumes = "application/json")
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
+        log.info("create a task controller");
+        try {
+            taskService.saveTask(taskRequestDTO);
+            return new ResponseEntity<>(taskRequestDTO, HttpStatus.OK);
+        } catch (TaskException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @PostMapping(value = "/create-project", consumes = "application/json")
