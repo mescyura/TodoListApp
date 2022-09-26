@@ -7,11 +7,14 @@ import com.todo.todolistapp.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {ProjectMapper.class, CommentMapper.class, TimeMapper.class})
 public interface TaskMapper {
+
+//    TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
 
     @Mapping(source = "dueDate", target = "dueDate", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
     Task toTaskEntity(TaskRequestDTO taskDto);

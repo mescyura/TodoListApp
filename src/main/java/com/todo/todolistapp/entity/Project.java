@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "project")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project implements Serializable {

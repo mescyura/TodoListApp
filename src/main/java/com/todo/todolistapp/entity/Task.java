@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "task")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task implements Serializable {

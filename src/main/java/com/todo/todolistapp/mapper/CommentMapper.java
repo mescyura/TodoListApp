@@ -2,18 +2,18 @@ package com.todo.todolistapp.mapper;
 
 import com.todo.todolistapp.dto.comment.CommentDTO;
 import com.todo.todolistapp.dto.comment.CommentRequestDTO;
-import com.todo.todolistapp.dto.project.ProjectRequestDTO;
-import com.todo.todolistapp.dto.project.ProjectVO;
 import com.todo.todolistapp.entity.Comment;
-import com.todo.todolistapp.entity.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = TimeMapper.class)
+@Mapper(componentModel = "spring", uses = TimeMapper.class)
 public interface CommentMapper {
+
+//    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     Comment toCommentEntity(CommentRequestDTO commentRequestDTO);
 

@@ -5,11 +5,14 @@ import com.todo.todolistapp.dto.project.ProjectDTO;
 import com.todo.todolistapp.dto.project.ProjectVO;
 import com.todo.todolistapp.entity.Project;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {TaskMapper.class, TimeMapper.class})
 public interface ProjectMapper {
+
+    //    ProjectMapper INSTANCE = Mappers.getMapper(ProjectMapper.class);
 
     Project toProjectEntity(ProjectRequestDTO projectDto);
 
